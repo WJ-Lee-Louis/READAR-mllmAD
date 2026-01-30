@@ -1,0 +1,20 @@
+name: read_mvtec
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pip:
+    - transformers
+    - sentencepiece
+    - accelerate
+    - safetensors
+    - regex
+    - opencv-python
+    - scikit-learn
+    - matplotlib
+    - tqdm

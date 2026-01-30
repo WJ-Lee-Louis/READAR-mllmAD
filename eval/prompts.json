@@ -1,0 +1,8 @@
+{
+  "default_template": "Segment the {anomaly} on the {object}.",
+  "generic_template": "Segment any anomaly on the {object}.",
+  "class_overrides": {
+    "bottle": "Segment the {anomaly} on the bottle.",
+    "hazelnut": "Segment the {anomaly} on the hazelnut."
+  }
+}
