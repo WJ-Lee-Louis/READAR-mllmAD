@@ -367,7 +367,7 @@ Output CSV columns:
 python eval/eval_metrics.py \
   --pred_root ./read_mvtec_outputs_default \
   --mvtec_root /path/to/MVTecAD \
-  --out_csv mvtec_eval_0120.csv \
+  --out_csv mvtecAD_eval.csv \
   --pro_hard
 ```
 
