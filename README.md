@@ -1,110 +1,86 @@
-# AnomalyDetection-mLLM-READ
+# READAR: Can Multimodal Language Models Reason to Attend to Anomaly Regions?
 
-This repository contains the minimal code needed to run **MVTec AD inference** with READ and compute benchmark metrics
+This repository contains the minimal code needed to run inference with MVTecAD Dataset via READ(Reasoning to Attend) and compute benchmark metrics
 (iAUROC, pAUROC, PRO, F1-max). Large artifacts such as datasets, model weights, and inference outputs are intentionally
-excluded from version control.
+excluded.
 
+## Background & Motivation
 <img width="913" height="387" alt="image" src="https://github.com/user-attachments/assets/987ceb31-9434-47f8-9ad2-80be8477fd31" />
 
-# Background & Motivation
+### Unsupervised Anomaly Detection
 
-## Unsupervised Anomaly Detection
-
-In real-world industrial and manufacturing environments, collecting sufficient anomaly samples is inherently difficult due to **data scarcity** and **high acquisition costs**. As a result, many practical anomaly detection settings assume that anomaly samples are unavailable during training, while test sets contain a mixture of normal and anomalous instances.
+In real-world industrial and manufacturing environments, collecting sufficient anomaly samples is inherently difficult due to data scarcity and high acquisition costs. As a result, many practical anomaly detection settings assume that anomaly samples are unavailable during training, while test sets contain a mixture of normal and anomalous instances.
 
 This constraint has led to extensive research on **unsupervised anomaly detection**, where models are trained exclusively on normal data and are expected to identify deviations at inference time. Such approaches have demonstrated robust and reliable performance across various industrial benchmarks.
 
 ---
 
-## Taxonomy of Unsupervised Anomaly Detection Methods
+### Taxonomy of Unsupervised Anomaly Detection Methods
 
 Unsupervised anomaly detection methods can be broadly categorized into two main paradigms:
 
-### 1. Feature-Embedding-Based Methods
+#### 1. Feature-Embedding-Based Methods
 
-Feature-embedding-based approaches model the distribution of normal data in a learned feature space and detect anomalies based on deviations from this distribution. Representative techniques include:
+Feature-embedding-based approaches model the distribution of normal data in a learned feature space and detect anomalies based on deviations from this distribution. Representative techniques include: teacher-student architecture, one-class classification, distribution modeling(e.g., normalizaing flow-based), and feature memory bank-based. Among these, **feature memory bank approaches** such as **SPADE**, **PaDiM**, and **PatchCore** have achieved particularly strong **full-shot** performance. In some benchmarks, these methods demonstrate near-saturated performance, indicating the maturity and effectiveness of feature-based unsupervised anomaly detection.
 
-- **Teacher–Student Architectures**
-- **One-Class Classification**
-- **Distribution Modeling** (e.g., normalizing-flow-based methods)
-- **Feature Memory Bank Methods**
+#### 2. Reconstruction-Based Methods
 
-Among these, **feature memory bank approaches** such as **SPADE**, **PaDiM**, and **PatchCore** have achieved particularly strong full-shot performance. In several benchmarks, these methods demonstrate near-saturated performance, indicating the maturity and effectiveness of feature-based unsupervised anomaly detection.
+Reconstruction-based methods learn to reconstruct normal images and use reconstruction errors as anomaly scores. This category includes approaches based on: autoencoder, GAN, transformer, diffusion. Despite their conceptual simplicity, reconstruction-based methods often face challenges related to reconstruction fidelity, training stability, and precise anomaly localization, especially for high-resolution industrial imagery.
 
 ---
 
-### 2. Reconstruction-Based Methods
+### Vision–Language Models for Anomaly Detection
 
-Reconstruction-based methods learn to reconstruct normal images and use reconstruction errors as anomaly scores. This category includes approaches based on:
-
-- Autoencoders
-- GANs
-- Transformer-based architectures
-- Diffusion models
-
-Despite their conceptual simplicity, reconstruction-based methods often face challenges related to reconstruction fidelity, training stability, and precise anomaly localization, especially for high-resolution industrial imagery.
+Recently, **Vision–Language Models (VLMs)** such as CLIP have been introduced into anomaly detection research. These methods leverage the alignment between **textual descriptions of normal/anomalous states** and **image representations** to enable **few-shot** or **zero-shot anomaly detection**: **WinCLIP**, **AnomalyCLIP**, etc. These approaches significantly improve data efficiency by exploiting pre-trained vision–language alignment. However, they primarily frame anomaly detection as a similarity-based scoring problem, where reasoning and semantic understanding play only a limited role.
 
 ---
 
-## Vision–Language Models for Anomaly Detection
-
-Recently, **Vision–Language Models (VLMs)** such as CLIP have been introduced into anomaly detection research. These methods leverage the alignment between **textual descriptions of normal/anomalous states** and **image representations** to enable **few-shot** or **zero-shot anomaly detection**.
-
-Representative works include:
-
-- **WinCLIP**
-- **AnomalyCLIP**
-
-These approaches significantly improve data efficiency by exploiting pre-trained vision–language alignment. However, they primarily frame anomaly detection as a similarity-based scoring problem, where reasoning and semantic understanding play only a limited role.
-
----
-
-## Multimodal LLMs for Anomaly Detection
+### Multimodal LLMs for Anomaly Detection
 
 More recent efforts aim to apply **multimodal Large Language Models (LLMs)** directly to anomaly detection tasks. A notable example is **AnomalyGPT**, which explores the integration of multimodal LLMs into anomaly detection pipelines.
 
 The motivation for adopting multimodal LLMs in anomaly detection can be summarized as follows:
-
-1. **Generalization and Adaptability**  
+> 1. **Generalization and Adaptability**  
    The ability to generalize to unseen products, defect types, and domains without retraining.
-
-2. **Explainability and Interaction**  
+> 2. **Explainability and Interaction**  
    Providing natural language explanations and enabling question–answering capabilities regarding detected anomalies.
 
 While AnomalyGPT demonstrates progress toward overcoming the one-class-one-model paradigm and enables general anomaly scoring and localization, the LLM does not yet function as the primary reasoning agent in the anomaly detection process.
 
 ---
 
-## Project Objective
+### Project Objective
 
 This project aims to move beyond CLIP-based anomaly detection frameworks and investigate whether **multimodal foundation models can serve as the core reasoning component** in anomaly detection tasks.
 
 In particular, we focus on:
-
 - **Anomaly segmentation and localization**
 - **Training-free and zero-shot settings**
-- The role of **reasoning about where to attend** in detecting anomalous regions
 
 ---
 
-## Model Selection
+### Model Selection
 
 To this end, we adopt a multimodal foundation model pipeline consisting of:
-
 - **LLaVA** as the backbone LLM, leveraging visual instruction tuning
 - **SAM (Segment Anything Model)** for precise segmentation and localization
 
 We evaluate several models that integrate these components:
-
 - **LISA**
+<img width="1671" height="619" alt="image" src="https://github.com/user-attachments/assets/c2b86a25-18de-4e86-9cb2-720763370cac" />
+
 - **PixelLM**
+<img width="1585" height="687" alt="image" src="https://github.com/user-attachments/assets/55144ca7-65e3-465c-bc7c-4631799baa7b" />
+
 - **READ**
+<img width="1383" height="741" alt="image" src="https://github.com/user-attachments/assets/57625602-f619-4df3-a369-60425fd4ab8b" />
+
 
 Both PixelLM and READ are derived from the LISA architecture and incorporate mechanisms for region-level visual grounding. Among them, **READ** explicitly emphasizes *reasoning about where to attend* within an image.
 
 ---
 
-## Research Focus
+### Research Focus
 
 The central research question of this project is:
 
@@ -114,6 +90,7 @@ By experimentally evaluating READ under training-free and zero-shot conditions, 
 
 ---
 
+## 
 
 
 
@@ -123,61 +100,27 @@ By experimentally evaluating READ under training-free and zero-shot conditions, 
 
 
 
-## What is included
-- Inference and evaluation:
-  - `eval/mvtec_batch_infer.py`
-  - `eval/eval_metrics.py`
-- Model code:
-  - `model/`
-  - `my_inference.py`
-  - `utils.py`
-- Environment:
-  - `environment.yml`
-  - `requirements.txt`
 
-## What is NOT included
+### NOT included
 - MVTec AD dataset
 - Model weights / checkpoints
 - Inference outputs (`read_mvtec_outputs*`)
 - Cached environments (`.venv`, `__pycache__`, etc.)
 
-## Environment
-Use either Conda or pip:
-
-### Conda
+### Conda & pip
 ```bash
 conda env create -f environment.yml
 conda activate read
 ```
-
-### pip
 ```bash
 pip install -r requirements.txt
 ```
 
-## Dataset (MVTec AD)
-Download and place the dataset in a local path, e.g.:
-```
-/path/to/MVTecAD
-```
-Expected structure:
-```
-MVTecAD/<class>/test/<defect>/<image>.png
-MVTecAD/<class>/ground_truth/<defect>/<image>_mask.png
-```
-
-## Model Weights
-Prepare READ and vision tower weights locally. Example placeholders:
-- `READ-LLaVA-v1.5-7B-for-ReasonSeg-valset`
-- `clip-vit-large-patch14-336`
-
-Pass the correct paths via arguments when running inference.
-
-## 1) Run Inference (MVTec)
+### 1) Run Inference (MVTecAD)
 ```bash
 python eval/mvtec_batch_infer.py \
   --mvtec_root /path/to/MVTecAD \
-  --out_dir ./read_mvtec_outputs_default \
+  --out_dir ./read_mvtecAD_outputs \
   --classes bottle,hazelnut \
   --max_per_class -1 \
   --prompt_mode anomaly
@@ -188,17 +131,17 @@ This will write per-image subfolders containing:
 - `metadata.json` (image path + prompt)
 - visualization images (optional)
 
-## 2) Run Evaluation
+### 2) Run Evaluation
 ```bash
 python eval/eval_metrics.py \
-  --pred_root ./read_mvtec_outputs_default \
+  --pred_root ./read_mvtecAD_outputs \
   --mvtec_root /path/to/MVTecAD \
-  --out_csv mvtec_eval_0120.csv
+  --out_csv mvtecAD_eval.csv
 ```
 
 Output CSV columns:
 - `scope`: `overall` or `class`
-- `class`: `ALL` or class name
+- `category`: `ALL` or class name
 - `iAUROC`: image-level AUROC
 - `pAUROC`: pixel-level AUROC
 - `PRO`: dataset-level PRO-AUC (FPR ≤ 0.3)
@@ -216,7 +159,7 @@ python eval/eval_metrics.py \
   --pro_hard
 ```
 
-## Notes
+#### Notes
 - `eval_metrics.py` assumes `pred_logits_*.npy` are **raw logits** and applies `sigmoid` internally.
 - Anomaly images without GT masks are **skipped** for evaluation.
 
