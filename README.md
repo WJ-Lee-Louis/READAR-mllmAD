@@ -187,7 +187,18 @@ Flow:
 
 ---
 
-## 4. Benchmark Metrics
+## 4. Detailed Study about READ: Similarity Scoring Process and Discrete to Continuous Module
+
+### Similarity Scoring Process
+<img width="2000" height="966" alt="image" src="https://github.com/user-attachments/assets/08d5e28d-c6c6-4ca0-abf4-281706317f68" />
+
+
+### Discrete to Continuous Module
+<img width="2000" height="1274" alt="image" src="https://github.com/user-attachments/assets/04d2e373-fe98-4274-aafd-08ed66955f0b" />
+
+---
+
+## 5. Benchmark Metrics
 
 We compute standard Industrial Anomaly Detection metrics:
 
