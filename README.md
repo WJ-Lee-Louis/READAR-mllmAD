@@ -1,5 +1,7 @@
 # READAR: Can Multimodal Large Language Models Reason to Attend to Anomaly Regions?
 
+<img width="959" height="450" alt="image" src="https://github.com/user-attachments/assets/369ce115-2873-4054-ab45-fde90fa2c906" />
+
 This repository contains the minimal code needed to run inference with MVTecAD Dataset via READ(Reasoning to Attend) and compute benchmark metrics
 (iAUROC, pAUROC, PRO, F1-max). Large artifacts such as datasets, model weights, and inference outputs are intentionally
 excluded.
